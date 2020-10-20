@@ -1,6 +1,7 @@
 package co.edu.ufps.ProyectoWeb.Controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,12 +10,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import co.edu.ufps.ProyectoWeb.DAO.ProductoDAO;
+import co.edu.ufps.ProyectoWeb.model.Producto;
+
+
 /**
  * Servlet implementation class ProductoServlet
  */
 @WebServlet("/")
 public class ProductoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private ProductoDAO productoDao;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -23,6 +29,9 @@ public class ProductoServlet extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
+    public void init() {
+    	productoDao = new ProductoDAO();
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -30,7 +39,7 @@ public class ProductoServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getServletPath();
 		System.out.println(action);
-		
+		try {
 		switch(action) {
 		
 		case"/new":
@@ -40,13 +49,18 @@ public class ProductoServlet extends HttpServlet {
 		case "/actualizarProducto":
 			//actualizarProducto(request,response);
 			break;
+		case"/guardarProducto":
+			guardarProducto(request,response);
+			break;
 			
 		default:
 			list(request,response);
-		 break;
-			
+		 break;		
 			
 		}
+		}catch (SQLException ex) {
+            throw new ServletException(ex);
+        }
 		
 	}
 
@@ -67,6 +81,25 @@ public class ProductoServlet extends HttpServlet {
 		    throws ServletException, IOException {
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("Principal.jsp");
 		        dispatcher.forward(request, response);
+		    }
+	private void guardarProducto(HttpServletRequest request, HttpServletResponse response)
+		    throws SQLException, IOException {
+		        Integer id = Integer.parseInt(request.getParameter("id"));
+		        String referencia = request.getParameter("referencia");
+		        String nombre = request.getParameter("nombre");
+		        String descripcioncorta = request.getParameter("descripcionCorta");
+		        String detalle = request.getParameter("detalle");
+		        Double valor= Double.parseDouble(request.getParameter("valor"));
+		        Integer categoria = Integer.parseInt(request.getParameter("categoria_id"));
+		        Integer marca = Integer.parseInt(request.getParameter("marca_id"));
+		        Integer imagen = Integer.parseInt(request.getParameter("imagen"));
+		        
+		        
+		       
+		        
+		        Producto nuevoProducto = new Producto(id,referencia,nombre,descripcioncorta,detalle,valor,categoria,marca,imagen);
+		       productoDao.registrarProducto(nuevoProducto);
+		        response.sendRedirect("list");
 		    }
 
 }

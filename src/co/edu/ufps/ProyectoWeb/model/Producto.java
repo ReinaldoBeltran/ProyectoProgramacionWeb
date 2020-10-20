@@ -120,8 +120,11 @@ public  class Producto implements Serializable{
 		this.imagen = imagen;
 	}
 	
-	
-	
+	public Boolean validarCategoria(Integer idCategoria) {
+
+		
+		return false;
+	}
 	
 	
 	

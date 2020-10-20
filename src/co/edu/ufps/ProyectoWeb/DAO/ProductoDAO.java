@@ -14,9 +14,8 @@ public class ProductoDAO {
 		private String jdbcURL = "jdbc:mysql://localhost:3306/empresa?useSSL=false";
 	    private String jdbcUsername = "root";
 	    private String jdbcPassword = "";
-	    private static final String INSERT_PRODUCTOS_SQL = "INSERT INTO producto" + "  "
-	    		+ "(id, referencia, nombre, descripcioncorta, detalle, valor, categoria_id, marca_id, imagen) VALUES " +
-	        " (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+	    private static final String INSERT_PRODUCTOS_SQL = "INSERT INTO producto" + "  (id,referencia,nombre,descripcioncorta,detalle,valor,categoria_id,marca_id,imagen) VALUES " +
+	            " (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
 	    //private static final String SELECT_USER_BY_ID = "select id,name,email,country from users where id =?";
 	    //private static final String SELECT_ALL_USERS = "select * from users";
@@ -40,7 +39,7 @@ public class ProductoDAO {
 	        return connection;
 	    }
 	    
-	    public void insertUser(Producto producto) throws SQLException {
+	    public void registrarProducto(Producto producto) throws SQLException {
 	        System.out.println(INSERT_PRODUCTOS_SQL);
 	        // try-with-resource statement will auto close the connection.
 	        try (Connection connection = getConnection(); PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(INSERT_PRODUCTOS_SQL)) {
