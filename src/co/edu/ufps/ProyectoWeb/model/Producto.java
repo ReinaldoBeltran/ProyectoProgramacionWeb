@@ -2,6 +2,8 @@ package co.edu.ufps.ProyectoWeb.model;
 
 import java.io.Serializable;
 
+import com.mysql.jdbc.Blob;
+
 public  class Producto implements Serializable{
 	
 	private Integer id;

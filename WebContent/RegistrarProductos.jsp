@@ -40,7 +40,7 @@
                                     Edit Producto
                                 </c:if>
                                 <c:if test="${user == null}">
-                                    Add New Producto
+                                    Agregar Nuevo Producto
                                 </c:if>
                             </h2>
                         </caption>

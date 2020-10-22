@@ -9,6 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.JOptionPane;
+
+import com.mysql.jdbc.Blob;
+
 
 import co.edu.ufps.ProyectoWeb.DAO.ProductoDAO;
 import co.edu.ufps.ProyectoWeb.model.Producto;
@@ -49,7 +53,12 @@ public class ProductoServlet extends HttpServlet {
 		case "/actualizarProducto":
 			//actualizarProducto(request,response);
 			break;
+			
+		case "/admin":
+			administrador(request,response);
+			break;
 		case"/guardarProducto":
+		
 			guardarProducto(request,response);
 			break;
 			
@@ -72,6 +81,11 @@ public class ProductoServlet extends HttpServlet {
 		doGet(request, response);
 	}
 	
+	private void administrador(HttpServletRequest request, HttpServletResponse response)
+		    throws ServletException, IOException {
+		        RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
+		        dispatcher.forward(request, response);
+		    }
 	private void mostrarFormulario(HttpServletRequest request, HttpServletResponse response)
 		    throws ServletException, IOException {
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("RegistrarProductos.jsp");
@@ -93,13 +107,13 @@ public class ProductoServlet extends HttpServlet {
 		        Integer categoria = Integer.parseInt(request.getParameter("categoria_id"));
 		        Integer marca = Integer.parseInt(request.getParameter("marca_id"));
 		        Integer imagen = Integer.parseInt(request.getParameter("imagen"));
-		        
+		          		        
 		        
 		       
-		        
-		        Producto nuevoProducto = new Producto(id,referencia,nombre,descripcioncorta,detalle,valor,categoria,marca,imagen);
-		       productoDao.registrarProducto(nuevoProducto);
+              Producto nuevoProducto = new Producto(id,referencia,nombre,descripcioncorta,detalle,valor,categoria,marca,imagen);
+		      productoDao.registrarProducto(nuevoProducto);
 		        response.sendRedirect("list");
 		    }
+	
 
 }

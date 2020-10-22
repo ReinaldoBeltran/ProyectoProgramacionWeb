@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Productos</title>
+<title>$consultaBaseDatos="nombre"</title>
 </head>
 <body>
 
