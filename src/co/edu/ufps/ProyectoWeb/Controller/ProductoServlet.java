@@ -13,8 +13,9 @@ import javax.swing.JOptionPane;
 
 import com.mysql.jdbc.Blob;
 
-
+import co.edu.ufps.ProyectoWeb.DAO.LoginDAO;
 import co.edu.ufps.ProyectoWeb.DAO.ProductoDAO;
+import co.edu.ufps.ProyectoWeb.model.Login;
 import co.edu.ufps.ProyectoWeb.model.Producto;
 
 
@@ -25,6 +26,9 @@ import co.edu.ufps.ProyectoWeb.model.Producto;
 public class ProductoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ProductoDAO productoDao;
+	private LoginDAO loginDao;
+	private Login login1;
+	
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -35,6 +39,8 @@ public class ProductoServlet extends HttpServlet {
     }
     public void init() {
     	productoDao = new ProductoDAO();
+    	loginDao=new LoginDAO();
+    	
     }
 
 	/**
@@ -62,8 +68,12 @@ public class ProductoServlet extends HttpServlet {
 			guardarProducto(request,response);
 			break;
 			
+		case"/validar":
+			validarLogin(request,response);
+			
+		
 		default:
-			list(request,response);
+			//administrador(request,response);
 		 break;		
 			
 		}
@@ -86,16 +96,39 @@ public class ProductoServlet extends HttpServlet {
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
 		        dispatcher.forward(request, response);
 		    }
+	private void validarLogin(HttpServletRequest request, HttpServletResponse response)
+		    throws ServletException, IOException {
+		
+		Integer r;
+		Integer usuario=Integer.parseInt(request.getParameter("userAdmin"));
+		Integer contraseña=Integer.parseInt(request.getParameter("contraseñaAdmin"));
+		this.login1=new Login(usuario,contraseña);
+		r=loginDao.validarLogin(login1);
+		System.out.println(r);
+		
+		if(r==1) {
+		loginDao.setResultado(0);
+		response.sendRedirect("test1.jsp");
+		
+		//request.getRequestDispatcher("test1.jsp").forward(request, response);			
+	        }	
+		else {
+			response.sendRedirect("test2.jsp");
+		}
+		//else {
+			//request.getRequestDispatcher("admin.jsp").forward(request, response);
+		//}
+		    }
 	private void mostrarFormulario(HttpServletRequest request, HttpServletResponse response)
 		    throws ServletException, IOException {
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("RegistrarProductos.jsp");
 		        dispatcher.forward(request, response);
 		    }
-	private void list(HttpServletRequest request, HttpServletResponse response)
-		    throws ServletException, IOException {
-		        RequestDispatcher dispatcher = request.getRequestDispatcher("Principal.jsp");
-		        dispatcher.forward(request, response);
-		    }
+	//private void list(HttpServletRequest request, HttpServletResponse response)
+	  //  throws ServletException, IOException {
+		//        RequestDispatcher dispatcher = request.getRequestDispatcher("Principal.jsp");
+		 //       dispatcher.forward(request, response);
+		    //}
 	private void guardarProducto(HttpServletRequest request, HttpServletResponse response)
 		    throws SQLException, IOException {
 		        Integer id = Integer.parseInt(request.getParameter("id"));
